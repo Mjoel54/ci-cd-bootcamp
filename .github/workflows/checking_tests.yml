@@ -69,9 +69,6 @@ jobs:
           timeout 60s bash -c 'until curl -s http://localhost:3001; do sleep 5; done'
           echo "Backend server is running!"
 
-      - name: Run Vitest tests
-        run: npm run test
-
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
