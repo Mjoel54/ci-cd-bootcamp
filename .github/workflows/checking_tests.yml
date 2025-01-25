@@ -24,22 +24,19 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd ./Develop
           npm run install
 
       - name: Build project
         run: |
-          cd ./Develop
           npm run build
 
       - name: Debug event
         run: |
-          cd ./Develop
           echo "${{ toJson(github.event) }}"
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: cd ./Develop && npm run test-gui
+          start: npm run test-gui
         env:
           CYPRESS_BASE_URL: "http://localhost:3000"
