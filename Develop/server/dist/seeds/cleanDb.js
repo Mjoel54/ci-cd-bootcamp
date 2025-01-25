@@ -2,8 +2,11 @@ import models from "../models/index.js";
 import db from "../config/connection.js";
 export default async (modelName, collectionName) => {
     try {
-        //@ts-ignore
-        let modelExists = await models[modelName].db.db
+        const modelDb = models[modelName]?.db?.db;
+        if (!modelDb) {
+            throw new Error(`Database for model ${modelName} is not initialized`);
+        }
+        let modelExists = await modelDb
             .listCollections({
             name: collectionName,
         })
