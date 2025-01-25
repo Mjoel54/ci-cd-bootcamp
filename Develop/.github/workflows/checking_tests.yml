@@ -2,28 +2,25 @@ name: Checking Tests
 
 on:
   pull_request:
-    branches:
-      - develop
+    branches: [develop, staging]
 
 jobs:
-  test:
-    name: Checking Tests
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Use Node.js 21.x
+        uses: actions/setup-node@v3
         with:
           node-version: 21.x
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build App
-        run: npm run build
-
-      - name: Run vitest tests
-        run: npm run test
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm start
