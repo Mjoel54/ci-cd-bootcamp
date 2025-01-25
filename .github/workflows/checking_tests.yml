@@ -52,6 +52,7 @@ jobs:
           npm run start
         env:
           NODE_ENV: test
+          MONGODB_URI: "mongodb://127.0.0.1:27017/techquiz"
 
       - name: Wait for backend server to start
         run: |
