@@ -14,29 +14,33 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js 21.x
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 21.x
           cache: "npm"
 
-      - name: Install dependencies
-        run: |
-          npm run install
+      - name: Install root dependencies
+        run: npm install
+
+      - name: Install server dependencies
+        run: cd server && npm install
+
+      - name: Install client dependencies
+        run: cd client && npm install
 
       - name: Build project
-        run: |
-          npm run build
+        run: npm run render-build
 
-      - name: Debug event
-        run: |
-          echo "${{ toJson(github.event) }}"
+      - name: Run Vitest tests
+        run: npm run test
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm run test-gui
+          start: npm run develop
+          wait-on: "http://localhost:3000"
         env:
           CYPRESS_BASE_URL: "http://localhost:3000"
