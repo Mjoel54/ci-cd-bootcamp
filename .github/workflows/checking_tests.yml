@@ -46,6 +46,18 @@ jobs:
       - name: Build project
         run: npm run render-build
 
+      - name: Start backend server
+        run: |
+          cd server
+          npm run start &
+        env:
+          NODE_ENV: test
+
+      - name: Wait for backend server to start
+        run: |
+          timeout 60s bash -c 'until curl -s http://localhost:3001; do sleep 5; done'
+          echo "Backend server is running!"
+
       - name: Run Vitest tests
         run: npm run test
 
@@ -53,6 +65,10 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           start: npm run develop
-          wait-on: "http://localhost:3001"
+          wait-on: "http://localhost:3000"
+          wait-on-timeout: 90
         env:
-          CYPRESS_BASE_URL: "http://localhost:3001"
+          CYPRESS_BASE_URL: "http://localhost:3000"
+
+      - name: Debug event
+        run: echo "${{ toJson(github.event) }}"
