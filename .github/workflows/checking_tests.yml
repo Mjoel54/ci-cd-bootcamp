@@ -69,10 +69,13 @@ jobs:
           timeout 60s bash -c 'until curl -s http://localhost:3001; do sleep 5; done'
           echo "Backend server is running!"
 
+      - name: Install Cypress dependencies
+        run: npm install cypress --save-dev
+
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm run test-component
+          start: npx cypress run --config-file cypress/cypress.config.ts --component --browser chrome --headless
           wait-on: "http://localhost:3000"
           wait-on-timeout: 90
         env:
