@@ -3,7 +3,7 @@ import viteConfig from "../vite.config";
 
 export default defineConfig({
   component: {
-    specPattern: "cypress/component/**/*.cy.{js,jsx,ts,tsx}",
+    specPattern: "component/**/*.cy.{js,jsx,ts,tsx}",
     devServer: {
       framework: "react",
       bundler: "vite",
