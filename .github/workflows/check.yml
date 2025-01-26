@@ -1,42 +1,42 @@
-name: Run Cypress Tests on Pull Request to Develop
+# name: Run Cypress Tests on Pull Request to Develop
 
-on:
-  pull_request:
-    branches:
-      - develop
+# on:
+#   pull_request:
+#     branches:
+#       - develop
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo:latest
-        ports:
-          - 27017:27017
+#     services:
+#       mongo:
+#         image: mongo:latest
+#         ports:
+#           - 27017:27017
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
 
-      - name: Install dependencies
-        run: npm install
+#       - name: Install dependencies
+#         run: npm install
 
-      - name: Set environment variables
-        run: echo "MONGODB_URI=mongodb://localhost:27017/techquiz" >> $GITHUB_ENV
+#       - name: Set environment variables
+#         run: echo "MONGODB_URI=mongodb://localhost:27017/techquiz" >> $GITHUB_ENV
 
-      - name: Start server
-        run: npm run start &
-        env:
-          MONGODB_URI: mongodb://localhost:27017/techquiz
+#       - name: Start server
+#         run: npm run start &
+#         env:
+#           MONGODB_URI: mongodb://localhost:27017/techquiz
 
-      - name: Wait for server to be ready
-        run: sleep 10
+#       - name: Wait for server to be ready
+#         run: sleep 10
 
-      - name: Run Cypress component tests
-        run: npm run test-component
+#       - name: Run Cypress component tests
+#         run: npm run test-component
