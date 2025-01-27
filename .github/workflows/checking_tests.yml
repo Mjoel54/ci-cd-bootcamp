@@ -78,7 +78,7 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm run test-component
+          command: npx cypress run --component --browser chrome
           wait-on: "http://localhost:3000, http://localhost:3001"
           wait-on-timeout: 120
         env:
