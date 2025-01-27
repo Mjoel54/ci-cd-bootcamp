@@ -2,7 +2,7 @@ name: Checking Tests
 
 on:
   pull_request:
-    branches: [develop]
+    branches: ["develop"]
 
 jobs:
   test:
@@ -21,10 +21,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js 21.x
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -68,14 +68,11 @@ jobs:
       - name: Install Cypress dependencies
         run: npm install cypress --save-dev
 
-      - name: Run Cypress component tests
-        run: npm run test-component
-
-    #   - name: Run Cypress tests
-    #     uses: cypress-io/github-action@v6
-    #     with:
-    #       start: npx cypress run --config-file cypress/cypress.config.ts --component --browser chrome --headless
-    #       wait-on: "http://localhost:3000"
-    #       wait-on-timeout: 90
-    #     env:
-    #       CYPRESS_BASE_URL: "http://localhost:3000"
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm run test-component
+          wait-on: "http://localhost:3000"
+          wait-on-timeout: 90
+        env:
+          CYPRESS_BASE_URL: "http://localhost:3000"
