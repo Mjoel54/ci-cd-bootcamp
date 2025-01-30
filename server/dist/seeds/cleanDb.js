@@ -1,16 +1,17 @@
-import models from "../models/index.js";
-import db from "../config/connection.js";
+import models from '../models/index.js';
+import db from '../config/connection.js';
 export default async (modelName, collectionName) => {
     try {
-        const modelDb = models[modelName]?.db?.db;
-        if (!modelDb) {
-            throw new Error(`Database for model ${modelName} is not initialized`);
+        // Check if the model exists in the models object
+        const model = models[modelName];
+        if (!model || !model.db || !model.db.db) {
+            throw new Error(`Model or database connection not found for model: ${modelName}`);
         }
-        let modelExists = await modelDb
-            .listCollections({
+        // Check if the collection exists
+        const modelExists = await model.db.db.listCollections({
             name: collectionName,
-        })
-            .toArray();
+        }).toArray();
+        // If the collection exists, drop it
         if (modelExists.length) {
             await db.dropCollection(collectionName);
         }
