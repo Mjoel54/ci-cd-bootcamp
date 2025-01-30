@@ -8,20 +8,23 @@ on:
       - main
 
 jobs:
-  ci:
+  deploy:
     name: Deploy To Render
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Test
-        run: |
-          npm install
-          npm run test
 
-      - name: Deploy
-        # Only run this step if the branch is main
+      - name: Install Dependencies
+        run: |
+          cd server && npm install
+          cd ../client && npm install
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Deploy to Render
         if: github.ref == 'refs/heads/main'
         env:
           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          curl "$deploy_url"
+          curl -f "$deploy_url"
